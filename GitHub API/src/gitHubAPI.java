@@ -15,6 +15,12 @@ public class gitHubAPI {
 		HttpURLConnection connection = (HttpURLConnection) new URL(
 				"https://api.github.com/repos/" + userName + "/" + repoName + "/releases").openConnection();
 		BufferedReader input = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+		StringBuilder stringBuilderReturn = new StringBuilder();
+		String line;
+		while ((line = input.readLine()) != null) {
+			stringBuilderReturn.append("\n" + line);
+		}
+		input.close();
 		
 	}
 
