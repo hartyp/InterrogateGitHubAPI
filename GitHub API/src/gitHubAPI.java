@@ -21,7 +21,12 @@ public class gitHubAPI {
 			stringBuilderReturn.append("\n" + line);
 		}
 		input.close();
-		
+		Arrays.stream(stringBuilderReturn.toString().split("\"download_count\":")).skip(1).map(l -> l.split(",")[0])
+				.forEach(l -> System.out.println(l));
+		int count = Arrays.stream(stringBuilderReturn.toString().split("\"download_count\":")).skip(1)
+				.mapToInt(l -> Integer.parseInt(l.split(",")[0])).sum();
+		System.out.println("Amount of downloads from user " + userName + "'s repository " + repoName + " is: " + count);
+
 	}
 
 }
