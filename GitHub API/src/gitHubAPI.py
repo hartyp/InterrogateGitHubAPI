@@ -1,30 +1,31 @@
 import re
 from github import Github
-import csv
+import matplotlib.pyplot as plt
+plt.rcParams.update({'font.size': 10})
 
-def repoCommitsToCSV(user):
+def getRepoCommits(user):
+    names = []
+    commits = []
 
-    if user is None:
-        return None
+    for repo in user.get_user().get_repos():
+        names.append(repo.name)
+        commits.append(repo.get_commits().totalCount)
 
-    with open('data.csv', mode='w') as csv_file:
-        fieldnames = ['Name', 'Commits']
-        writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
-        writer.writeheader()
+    plt.bar(names,commits)
+    plt.xticks(fontsize=7)
+    plt.legend()
+    plt.xlabel('Repo Name')
+    plt.ylabel('Number of Commits')
 
-        for repo in user.get_user().get_repos():
-            repoCommits = {
-                'Name' : repo.name,
-                'Commits' : (repo.get_commits().totalCount),
-            
-            }
-            writer.writerow(repoCommits)
-    
+    plt.title('Bar Chart For the\nNumber of Commits to a Given Repository.')
+
+    plt.show()
 
 if __name__ == '__main__':
     login = input('Enter username and password separated by a space\t')
     username, password = login.split(' ')
     account = Github(username, password)
-    repoCommitsToCSV(account)
+    getRepoCommits(account)
+
     
     
